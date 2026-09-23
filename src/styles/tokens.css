@@ -1,0 +1,51 @@
+:root {
+  /* Midnight drafting table */
+  --ink-0: #090d15;
+  --ink-1: #0e1420;
+  --ink-2: #131b2b;
+  --ink-3: #1b2539;
+  --ink-4: #26324b;
+  --line: rgba(236, 230, 214, 0.08);
+  --line-strong: rgba(236, 230, 214, 0.16);
+  --paper: #ece6d6;
+  --paper-dim: #a9a397;
+  --paper-faint: #6f6f72;
+
+  --amber: #f5b544;
+  --coral: #ff6b5b;
+  --magenta: #ff5fa2;
+  --mint: #5fd3a5;
+  --lime: #c6f36b;
+  --sky: #6cb6ff;
+  --violet: #a98bff;
+  --gold: #ffd166;
+  --red: #ff4d5e;
+
+  /* Semantic tones (fills) */
+  --t-idle: #2b3752;
+  --t-active: var(--amber);
+  --t-compare: var(--coral);
+  --t-swap: var(--magenta);
+  --t-done: var(--mint);
+  --t-found: var(--lime);
+  --t-visited: var(--sky);
+  --t-frontier: var(--violet);
+  --t-path: var(--gold);
+  --t-muted: #1a2233;
+  --t-danger: var(--red);
+
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
+  --font-ui: 'Space Grotesk Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* Set per-page by the player; primitives use it for step transitions. */
+  --step-ms: 450ms;
+
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+}

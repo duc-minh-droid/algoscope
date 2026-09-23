@@ -1,0 +1,633 @@
+/* ---------- shared step motion ---------- */
+.av-item,
+.av-ptr,
+.av-span,
+.gv-node,
+.tv-node,
+.gd-cursor {
+  transition: transform var(--step-ms) var(--ease-in-out), opacity var(--step-ms) ease;
+}
+.tv-edge path,
+.gv-edge-line {
+  transition: d var(--step-ms) var(--ease-in-out), stroke var(--step-ms) ease;
+}
+.gv-arrow,
+.gv-w {
+  transition: transform var(--step-ms) var(--ease-in-out), fill var(--step-ms) ease;
+}
+.av-bar,
+.av-cell,
+.gv-disc,
+.gd-cell,
+.tv-node circle,
+.tv-node rect {
+  transition: fill var(--step-ms) ease, stroke var(--step-ms) ease, height var(--step-ms) var(--ease-in-out),
+    y var(--step-ms) var(--ease-in-out), opacity var(--step-ms) ease;
+}
+
+/* ---------- ArrayView ---------- */
+.av {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  overflow: visible;
+}
+.av-slot {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-dasharray: 4 4;
+}
+.av-zero {
+  stroke: var(--paper-faint);
+  stroke-dasharray: 3 5;
+}
+.av-cell {
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-width: 1;
+}
+.av-item[data-tone='idle'] .av-cell {
+  fill: var(--ink-3);
+  stroke: var(--line-strong);
+}
+.av-item[data-tone='idle'] .av-bar {
+  fill: var(--t-idle);
+}
+.av-item[data-tone='muted'] {
+  opacity: 0.38;
+}
+.av-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-anchor: middle;
+  fill: var(--paper);
+  pointer-events: none;
+}
+.av-idx {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--paper-faint);
+  text-anchor: middle;
+}
+.av-ptr-t,
+.av-span-t {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* ---------- GraphView ---------- */
+.gv {
+  --gv-edge: #3a4868;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  overflow: visible;
+}
+.gv-edge-line {
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.gv-edge[data-tone='path'] .gv-edge-line,
+.gv-edge[data-tone='done'] .gv-edge-line,
+.gv-edge[data-tone='found'] .gv-edge-line {
+  stroke-width: 5;
+}
+.gv-edge[data-tone='active'] .gv-edge-line,
+.gv-edge[data-tone='compare'] .gv-edge-line {
+  stroke-width: 4;
+  stroke-dasharray: 10 7;
+  animation: gv-march 0.8s linear infinite;
+}
+.gv-edge[data-tone='muted'],
+.gv-edge[data-dim],
+.gv-node[data-dim] {
+  opacity: 0.28;
+}
+.gv-edge {
+  transition: opacity var(--step-ms) ease;
+}
+@keyframes gv-march {
+  to {
+    stroke-dashoffset: -17;
+  }
+}
+.gv-w rect {
+  fill: var(--ink-1);
+  stroke-width: 1.5;
+}
+.gv-w text,
+.gv-label,
+.gv-badge text,
+.gv-sub {
+  font-family: var(--font-mono);
+  text-anchor: middle;
+  font-weight: 600;
+}
+.gv-w text {
+  font-size: 12px;
+  fill: var(--paper);
+}
+.gv-disc {
+  stroke: rgba(236, 230, 214, 0.35);
+  stroke-width: 1.5;
+}
+.gv-node[data-tone='idle'] .gv-disc {
+  stroke: var(--paper-faint);
+}
+.gv-label {
+  font-size: 16px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+}
+.gv-badge text {
+  font-size: 11.5px;
+  text-anchor: middle;
+}
+.gv-badge {
+  transition: opacity var(--step-ms) ease;
+}
+.gv-sub {
+  font-size: 11px;
+  fill: var(--paper-dim);
+}
+.gv-ring {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gv-spin 6s linear infinite;
+}
+@keyframes gv-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.gv-traveler {
+  filter: drop-shadow(0 0 6px currentColor);
+  pointer-events: none;
+}
+
+/* ---------- GraphEditor ---------- */
+.ge-toolbar,
+.gde-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+.ge-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.ge-hint {
+  margin: 8px 0 10px;
+  font-size: 12.5px;
+  color: var(--paper-dim);
+}
+.ge-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 14px;
+}
+@media (max-width: 900px) {
+  .ge-body {
+    grid-template-columns: 1fr;
+  }
+}
+.ge-canvas {
+  position: relative;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: radial-gradient(circle at 1px 1px, rgba(236, 230, 214, 0.09) 1px, transparent 0) 0 0 / 20px 20px, var(--ink-0);
+  touch-action: none;
+  user-select: none;
+}
+.ge-canvas svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ge-canvas[data-mode='connect'] svg,
+.ge-canvas[data-mode='source'] svg,
+.ge-canvas[data-mode='target'] svg {
+  cursor: crosshair;
+}
+.ge-canvas[data-mode='erase'] svg {
+  cursor: not-allowed;
+}
+.ge-edge-hit {
+  stroke: transparent;
+  stroke-width: 16;
+  fill: none;
+}
+.ge-edge-line {
+  stroke: #4a5a80;
+  stroke-width: 2.4;
+  fill: none;
+}
+.ge-arrow {
+  fill: #4a5a80;
+}
+.ge-canvas[data-mode='erase'] .ge-edge:hover .ge-edge-line {
+  stroke: var(--red);
+}
+.ge-w {
+  cursor: text;
+}
+.ge-w rect {
+  fill: var(--ink-2);
+  stroke: #4a5a80;
+}
+.ge-w text,
+.ge-node text,
+.ge-flag text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-anchor: middle;
+  fill: var(--paper);
+  font-weight: 600;
+  pointer-events: none;
+}
+.ge-node circle {
+  fill: var(--ink-3);
+  stroke: var(--amber);
+  stroke-width: 2;
+  transition: transform 160ms var(--ease-out);
+}
+.ge-node {
+  cursor: grab;
+}
+.ge-node[data-drag] circle {
+  transform: scale(1.12);
+}
+.ge-node text {
+  font-family: var(--font-ui);
+  font-size: 15px;
+}
+.ge-canvas[data-mode='erase'] .ge-node:hover circle {
+  stroke: var(--red);
+}
+.ge-flag text {
+  fill: #0b0f18;
+  font-size: 10.5px;
+}
+.ge-rubber {
+  stroke: var(--amber);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+}
+.ge-w-input {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  text-align: center;
+}
+.ge-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--paper-faint);
+  pointer-events: none;
+  font-style: italic;
+}
+.ge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ge-text textarea {
+  flex: 1;
+  min-height: 160px;
+}
+
+/* ---------- GridView ---------- */
+.gd {
+  --grid-empty: var(--ink-3);
+  --grid-wall: #05070c;
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  overflow: visible;
+}
+.gd-cell[data-wall] {
+  stroke: rgba(255, 255, 255, 0.05);
+}
+.gd-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gd-pop calc(var(--step-ms) * 1.2) var(--ease-out);
+}
+@keyframes gd-pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+}
+.gd-label {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+}
+.gd-path {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: gd-draw 900ms var(--ease-in-out) forwards;
+  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.6));
+}
+@keyframes gd-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.gd-marker circle {
+  stroke: #0b0f18;
+  stroke-width: 2;
+}
+.gd-marker text {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  text-anchor: middle;
+  fill: #0b0f18;
+}
+.gd-cursor {
+  fill: none;
+  stroke-width: 3;
+}
+
+/* ---------- GridEditor ---------- */
+.gde-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px 5px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-2);
+  color: var(--paper-dim);
+  font-size: 12.5px;
+  transition: border-color 160ms ease, color 160ms ease, transform 160ms var(--ease-out);
+}
+.swatch:active {
+  transform: scale(0.97);
+}
+.swatch.on {
+  border-color: var(--amber);
+  color: var(--paper);
+}
+.swatch i {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  color: #0b0f18;
+}
+.swatch i.round {
+  border-radius: 50%;
+}
+.gde-size {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--paper-dim);
+}
+.stepper b {
+  color: var(--paper);
+  font-family: var(--font-mono);
+}
+.stepper button {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-2);
+  color: var(--paper);
+}
+.gde-grid {
+  display: grid;
+  gap: 3px;
+  margin: 14px auto 6px;
+  touch-action: none;
+  user-select: none;
+}
+.gde-cell {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  cursor: crosshair;
+  transition: background-color 120ms ease;
+}
+.gde-marker {
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b0f18;
+}
+
+/* ---------- TreeView ---------- */
+.tv {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  overflow: visible;
+}
+.tv-edge path {
+  stroke: #3f4d70;
+  stroke-width: 2.2;
+  fill: none;
+}
+.tv-edge path[data-tone] {
+  stroke-width: 3.5;
+}
+.tv-elabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--paper-dim);
+  text-anchor: middle;
+}
+.tv-node circle,
+.tv-node rect {
+  stroke: rgba(236, 230, 214, 0.3);
+  stroke-width: 1.5;
+}
+.tv-label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-anchor: middle;
+}
+.tv-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--paper-dim);
+  text-anchor: middle;
+}
+
+/* ---------- bits ---------- */
+.viz-stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.viz-row > * {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+.viz-section > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.viz-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+.viz-aside {
+  font-size: 12.5px;
+  color: var(--paper-dim);
+}
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+.stat-v {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+.stat-l {
+  font-size: 11.5px;
+  color: var(--paper-faint);
+  letter-spacing: 0.04em;
+}
+.tag {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+.callout {
+  align-self: center;
+  padding: 10px 22px;
+  border: 1.5px solid;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+  transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out);
+}
+.callout[data-show] {
+  opacity: 1;
+  transform: none;
+}
+.token-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 34px;
+}
+.token-strip-l {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+  min-width: 64px;
+}
+.token-strip-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.token {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  animation: token-in 220ms var(--ease-out);
+  transition: background-color var(--step-ms) ease, color var(--step-ms) ease;
+}
+@keyframes token-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.95);
+  }
+}
+.token-empty {
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--paper-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .av-item,
+  .av-ptr,
+  .av-span,
+  .gv-node,
+  .tv-node,
+  .gd-cursor {
+    transition: opacity 150ms ease;
+  }
+  .gd-pulse,
+  .token,
+  .gv-ring,
+  .gv-edge[data-tone='active'] .gv-edge-line {
+    animation: none;
+  }
+  .gd-path {
+    animation-duration: 1ms;
+  }
+}
