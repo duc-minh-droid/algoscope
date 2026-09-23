@@ -7,6 +7,8 @@ Vite + React 19 + TypeScript. No router, no CSS framework. Hash routes: `#/` (at
 - `npm run typecheck` — `tsc --noEmit`
 - `npm run check [-- <substring>]` — runs every algorithm generator in Node on default, presets and 25 random inputs; validates notes, code tags, frame counts, parse/format round-trip
 - `npm run build`
+- Deploy: pushing to `main` runs `.github/workflows/deploy.yml` (typecheck + check + build → GitHub Pages at https://duc-minh-droid.github.io/algoscope/). `vite.config.ts` uses `base: './'`.
+- README media: with the dev server on 5391, `node scripts/record-demo.mjs` (WebP frames via Chrome CDP + 2× PNG stills into `media/`), then `python scripts/frames-to-gif.py` (Pillow) → `media/*.gif`. `media/raw` is gitignored.
 
 ## Architecture
 - `src/core/types.ts` — **the contract** (`AlgorithmDef`, `Frame`, `InputSpec`, `Tone`)
